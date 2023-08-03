@@ -14,6 +14,7 @@ public class Transaction {
     private String receiverCardId;
     private double amount;
     private Date transactionDate;
+    private int ticketNumber;
 
     public String getId() {
         return id;
@@ -53,5 +54,13 @@ public class Transaction {
 
     public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public int getTicketNumber() {
+        return ticketNumber;
+    }
+
+    public void setTicketNumber(int ticketNumber) {
+        this.ticketNumber = ticketNumber;
     }
 }
