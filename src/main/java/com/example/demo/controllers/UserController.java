@@ -25,23 +25,18 @@ public class UserController {
     // Método para crear un nuevo usuario (POST)
     @PostMapping("/users")
     public User createUser(@RequestBody User user) {
-        // Codificar la contraseña antes de guardarla en la base de datos
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
 
-        // Guardar el usuario en la base de datos
         return userRepository.save(user);
     }
 
-
-    // Método para obtener una lista de todos los usuarios (GET)
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        // Utiliza el UserRepository para obtener todos los usuarios de la base de datos
         return userRepository.findAll();
     }
 
-    @GetMapping("/users/{documentNumber}")
+    @GetMapping("/users/dni/{documentNumber}")
     public ResponseEntity<User> getUserByDocumentNumber(@PathVariable String documentNumber) {
         User user = userRepository.findByDocumentNumber(documentNumber);
         if (user != null) {
@@ -50,4 +45,16 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/users/id/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable String userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+
 }

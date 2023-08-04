@@ -10,7 +10,7 @@ public class Card {
 
     @Id
     private String id;
-    private Date expirationDate;
+    private Date expirationDate = new Date(1746345600000L);
     private double balance;
     private String cardHolderName;
     private String cardNumber;
@@ -19,8 +19,7 @@ public class Card {
     public Card() {
     }
 
-    public Card(Date expirationDate, double balance, String cardHolderName) {
-        this.expirationDate = expirationDate;
+    public Card(double balance, String cardHolderName) {
         this.balance = balance;
         this.cardHolderName = cardHolderName;
     }

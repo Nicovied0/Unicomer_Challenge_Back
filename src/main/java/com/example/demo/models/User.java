@@ -18,11 +18,8 @@ public class User {
   private String documentNumber;
   private String password;
   private String image;
-  // Otros atributos que desees agregar
-  // Lista de ObjectIds para las relaciones
   private List<String> cardIds = new ArrayList<>();
 
-  // Constructor vacío
   public User() {
   }
 
