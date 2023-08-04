@@ -22,7 +22,7 @@ public class TransactionController {
 
   private final TransactionRepository transactionRepository;
   private final CardRepository cardRepository;
-  private final Set<Integer> usedTicketNumbers = new HashSet<>(); // Para almacenar los números de ticket utilizados
+  private final Set<Integer> usedTicketNumbers = new HashSet<>();
 
   @Autowired
   public TransactionController(TransactionRepository transactionRepository, CardRepository cardRepository) {
@@ -85,26 +85,49 @@ public class TransactionController {
       throw new IllegalArgumentException("Saldo insuficiente en la tarjeta de envío");
     }
 
-    // Generar un número de ticket aleatorio no repetido
     int ticketNumber = generateUniqueTicketNumber();
 
     senderCard.setBalance(senderBalance - amount);
     cardRepository.save(senderCard);
 
     transaction.setTransactionDate(new Date());
-    transaction.setTicketNumber(ticketNumber); // Establecer el número de ticket generado
+    transaction.setTicketNumber(ticketNumber);
 
     return transactionRepository.save(transaction);
   }
 
-  // Generar un número de ticket aleatorio no repetido
+  @PostMapping("/deposit")
+  @CrossOrigin(origins = "*")
+  public Transaction simulateDeposit(@RequestBody Transaction transaction) {
+      Card receiverCard = cardRepository.findById(transaction.getReceiverCardId()).orElse(null);
+
+      if (receiverCard == null) {
+          throw new IllegalArgumentException("Tarjeta de recepción no encontrada");
+      }
+
+      double amount = transaction.getAmount();
+      double receiverBalance = receiverCard.getBalance();
+
+      if (amount <= 0) {
+          throw new IllegalArgumentException("El monto debe ser positivo");
+      }
+      int ticketNumber = generateUniqueTicketNumber();
+
+      receiverCard.setBalance(receiverBalance + amount);
+      cardRepository.save(receiverCard);
+      transaction.setTransactionDate(new Date());
+      transaction.setTicketNumber(ticketNumber);
+
+      return transactionRepository.save(transaction);
+  }
+
+
   private int generateUniqueTicketNumber() {
     Random random = new Random();
     int ticketNumber;
 
-    // Generar números aleatorios hasta encontrar uno no utilizado previamente
     do {
-      ticketNumber = random.nextInt(100000); // Puedes ajustar el rango según tus necesidades
+      ticketNumber = random.nextInt(100000);
     } while (usedTicketNumbers.contains(ticketNumber));
 
     usedTicketNumbers.add(ticketNumber);

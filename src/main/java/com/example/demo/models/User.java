@@ -1,11 +1,11 @@
 package com.example.demo.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "users")
 public class User {
@@ -19,11 +19,13 @@ public class User {
   private String password;
   private String image;
   private List<String> cardIds = new ArrayList<>();
+  private List<Double> ingresos = new ArrayList<>();
+  private List<Double> egresos = new ArrayList<>();
+  private List<FinancialMovement> financialMovements = new ArrayList<>();
 
   public User() {
   }
 
-  // Constructor con parámetros
   public User(String name, String image, String email, String dni, String password, String documentType,
       String documentNumber) {
     this.name = name;
@@ -49,7 +51,6 @@ public class User {
     this.id = id;
   }
 
-  // Getters y Setters para el atributo "name"
   public String getName() {
     return name;
   }
@@ -58,7 +59,6 @@ public class User {
     this.name = name;
   }
 
-  // Getters y Setters para el atributo "image"
   public String getImage() {
     return image;
   }
@@ -67,7 +67,6 @@ public class User {
     this.image = image;
   }
 
-  // Getters y Setters para el atributo "email"
   public String getEmail() {
     return email;
   }
@@ -76,7 +75,6 @@ public class User {
     this.email = email;
   }
 
-  // Getters y Setters para el atributo "documentType"
   public String getDocumentType() {
     return documentType;
   }
@@ -85,7 +83,6 @@ public class User {
     this.documentType = documentType;
   }
 
-  // Getters y Setters para el atributo "documentNumber"
   public String getDocumentNumber() {
     return documentNumber;
   }
@@ -102,16 +99,6 @@ public class User {
     this.password = password;
   }
 
-  // Métodos para agregar o eliminar IDs de tarjetas mediante sus ObjectIds
-  public void addCardId(String cardId) {
-    this.cardIds.add(cardId);
-  }
-
-  public void removeCardId(String cardId) {
-    this.cardIds.remove(cardId);
-  }
-
-  // Getters y Setters para la lista de IDs de tarjetas
   public List<String> getCardIds() {
     return cardIds;
   }
@@ -120,16 +107,68 @@ public class User {
     this.cardIds = cardIds;
   }
 
+  public List<Double> getIngresos() {
+    return ingresos;
+  }
+
+  public void setIngresos(List<Double> ingresos) {
+    this.ingresos = ingresos;
+  }
+
+  public List<Double> getEgresos() {
+    return egresos;
+  }
+
+  public void setEgresos(List<Double> egresos) {
+    this.egresos = egresos;
+  }
+
+  public List<FinancialMovement> getFinancialMovements() {
+    return financialMovements;
+  }
+
+  public void setFinancialMovements(List<FinancialMovement> financialMovements) {
+    this.financialMovements = financialMovements;
+  }
+
+  public void addCardId(String cardId) {
+    this.cardIds.add(cardId);
+  }
+
+  public void removeCardId(String cardId) {
+    this.cardIds.remove(cardId);
+  }
+
+  public void addIngreso(Double monto) {
+    if (ingresos == null) {
+      ingresos = new ArrayList<>();
+    }
+    ingresos.add(monto);
+  }
+
+  public void addEgreso(Double monto) {
+    if (egresos == null) {
+      egresos = new ArrayList<>();
+    }
+    egresos.add(monto);
+  }
+
+  public void addFinancialMovement(FinancialMovement movement) {
+    this.financialMovements.add(movement);
+  }
+
   @Override
   public String toString() {
     return "User{" +
         "id='" + id + '\'' +
         ", name='" + name + '\'' +
         ", email='" + email + '\'' +
-        "image='" + image + '\'' +
+        ", image='" + image + '\'' +
         ", documentType='" + documentType + '\'' +
         ", documentNumber='" + documentNumber + '\'' +
+        ", ingresos='" + ingresos + '\'' +
+        ", egresos='" + egresos + '\'' +
+        ", financialMovements='" + financialMovements + '\'' +
         '}';
   }
-
 }

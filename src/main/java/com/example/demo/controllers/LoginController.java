@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
- @CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class LoginController {
 
     private final UserRepository userRepository;
@@ -27,7 +27,7 @@ public class LoginController {
     private final ObjectMapper objectMapper;
 
     @Autowired
-    
+
     public LoginController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
             JwtTokenProvider jwtTokenProvider, ObjectMapper objectMapper) {
         this.userRepository = userRepository;
@@ -48,12 +48,11 @@ public class LoginController {
             if (passwordEncoder.matches(password, dbUser.getPassword())) {
                 String token = jwtTokenProvider.generateToken(documentNumber, documentType);
 
-                // Crear el objeto JSON de respuesta
                 Map<String, String> response = new HashMap<>();
                 response.put("token", token);
 
                 try {
-                    // Convertir el objeto a una representación JSON
+
                     String jsonResponse = objectMapper.writeValueAsString(response);
                     return ResponseEntity.ok(jsonResponse);
                 } catch (JsonProcessingException e) {

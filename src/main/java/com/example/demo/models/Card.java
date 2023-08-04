@@ -15,7 +15,6 @@ public class Card {
     private String cardHolderName;
     private String cardNumber;
 
-    // Constructor, getters y setters
     public Card() {
     }
 

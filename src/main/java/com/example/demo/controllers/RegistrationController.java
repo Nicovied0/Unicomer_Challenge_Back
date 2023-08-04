@@ -25,8 +25,6 @@ public class RegistrationController {
     @PostMapping("/register")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        // Verificar si el usuario ya existe en la base de datos por número de DNI o
-        // correo electrónico
         User existingUserByDni = userRepository.findByDocumentNumber(user.getDocumentNumber());
         User existingUserByEmail = userRepository.findByEmail(user.getEmail());
 
@@ -37,17 +35,13 @@ public class RegistrationController {
         if (existingUserByEmail != null) {
             return ResponseEntity.badRequest().body("Correo electrónico ya registrado");
         }
-
-        // Codificar la contraseña antes de guardarla en la base de datos
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
 
-        // Establecer la imagen predeterminada si el campo "image" está vacío
         if (user.getImage() == null || user.getImage().isEmpty()) {
             user.setImage("https://res.cloudinary.com/dylweuvjp/image/upload/v1691007184/vecqghtxym5pp8dwtmks.jpg");
         }
 
-        // Guardar el usuario en la base de datos
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }

@@ -21,7 +21,6 @@ public class MongoDBConfig {
         return MongoClients.create(settings);
     }
 
-    // Configura el BCryptPasswordEncoder como un bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
